@@ -4,6 +4,8 @@ const Board = require('./Board');
 
 const board = new Board();
 
+/* eslint-disable no-console */
+
 const displayInstructions = function displayInstructions() {
   console.log('Select a position to play at and press enter.\nPositions are shown below:');
   console.log('0|1|2\n-----\n3|4|5\n-----\n6|7|8\n\n');
@@ -11,25 +13,8 @@ const displayInstructions = function displayInstructions() {
 
 let turn = Math.random() > 0.5 ? 0 : 1;
 
-const handleMove = function handleMove(player, position) {
-  console.log(position);
-  try {
-    board.play(player, position);
-    const result = board.checkForWin();
-    if (result) {
-      console.log(`${player} wins the game!`);
-    } else {
-      playNextRound();
-    }
-  } catch (e) {
-    console.log(chalk.red('Try a different position.'));
-    turn -= 1;
-    playNextRound();
-  }
-};
-
 const playNextRound = function playNextRound() {
-  console.log('The current board is:');
+  console.log('\n\nThe current board is:');
   console.log(board.display());
   const currentPlayer = turn % 2 ? 'x' : 'o';
   turn += 1;
@@ -52,6 +37,25 @@ const playNextRound = function playNextRound() {
   prompt.get(schema, (err, result) => {
     handleMove(currentPlayer, result.position);
   });
+};
+
+const handleMove = function handleMove(player, position) {
+  console.log(position);
+  try {
+    board.play(player, position);
+    const result = board.checkForWin();
+    if (result === 'Tie') {
+      console.log(chalk.yellow('It\'s a tie...'));
+    } else if (result) {
+      console.log(`${result} wins the game!`);
+    } else {
+      playNextRound();
+    }
+  } catch (e) {
+    console.log(chalk.red('Try a different position.'));
+    turn -= 1;
+    playNextRound();
+  }
 };
 
 playNextRound();
