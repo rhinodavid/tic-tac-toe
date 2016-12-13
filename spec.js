@@ -21,6 +21,10 @@ describe('The tic tac toe board', () => {
     const board = new Board();
     board.storage = [0, 0, 'x', 0, 'x', 0, 'x', 0, 0];
     expect(board.checkForWin()).to.equal('x');
-    console.log(board.display());
+  });
+  it('should detect a tie', () => {
+    const board = new Board();
+    board.storage = ['o', 'x', 'o', 'x', 'o', 'o', 'x', 'o', 'x'];
+    expect(board.checkForWin()).to.equal('Tie');
   });
 });
